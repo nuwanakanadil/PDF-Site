@@ -1,0 +1,6 @@
+com\example\pdftools\config\CorsConfig$1.class
+com\example\pdftools\controller\PdfController.class
+com\example\pdftools\service\ImageToPdfService.class
+com\example\pdftools\PdftoolsApplication.class
+com\example\pdftools\controller\HealthController.class
+com\example\pdftools\config\CorsConfig.class
