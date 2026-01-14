@@ -52,6 +52,23 @@
             <scope>test</scope>
         </dependency>
 
+        <!--PDF to DOC-->
+        
+        <!-- PDF reading -->
+<dependency>
+    <groupId>org.apache.pdfbox</groupId>
+    <artifactId>pdfbox</artifactId>
+    <version>2.0.29</version>
+</dependency>
+
+<!-- Word document creation -->
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml</artifactId>
+    <version>5.2.5</version>
+</dependency>
+
+
     </dependencies>
 
     <build>
