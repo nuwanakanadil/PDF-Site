@@ -69,6 +69,30 @@
 </dependency>
 
 
+
+  <!-- Spring Web -->
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+  </dependency>
+
+  <!-- PDFBox -->
+  <dependency>
+    <groupId>org.apache.pdfbox</groupId>
+    <artifactId>pdfbox</artifactId>
+    <version>2.0.29</version>
+  </dependency>
+
+  <!-- Image IO WebP (optional but good) -->
+  <dependency>
+    <groupId>com.twelvemonkeys.imageio</groupId>
+    <artifactId>imageio-webp</artifactId>
+    <version>3.9.4</version>
+  </dependency>
+
+
+
+
     </dependencies>
 
     <build>
