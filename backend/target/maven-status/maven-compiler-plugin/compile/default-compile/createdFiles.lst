@@ -1,6 +1,14 @@
+com\example\pdftools\controller\PdfToDocxController.class
 com\example\pdftools\config\CorsConfig$1.class
 com\example\pdftools\controller\PdfController.class
+com\example\pdftools\service\PdfMergeService.class
 com\example\pdftools\service\ImageToPdfService.class
 com\example\pdftools\controller\HealthController.class
+com\example\pdftools\controller\PdfMergeController.class
+com\example\pdftools\controller\PdfCompressController.class
+com\example\pdftools\service\PdfCompressService.class
+com\example\pdftools\service\PdfToDocxService$TableColumn.class
+com\example\pdftools\service\PdfToDocxService.class
 com\example\pdftools\PdftoolsApplication.class
 com\example\pdftools\config\CorsConfig.class
+com\example\pdftools\service\PdfToDocxService$ColumnType.class

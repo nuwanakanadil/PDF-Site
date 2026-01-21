@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { FileUpload } from '../components/FileUpload';
 import { Button } from '../components/Button';
 import { FileText, Download, RefreshCw, CheckCircle, FileType } from 'lucide-react';
-import { generateDocxFile, triggerDownload, getFilenameWithoutExtension } from '../utils/downloadHelpers';
+import { convertPdfToDocx } from '../services/pdfToDocxApi';
+import { triggerDownload, getFilenameWithoutExtension } from '../utils/downloadHelpers';
 export function PdfToDocPage() {
   const [files, setFiles] = useState<File[]>([]);
   const [status, setStatus] = useState<'idle' | 'processing' | 'success'>('idle');
@@ -15,22 +16,35 @@ export function PdfToDocPage() {
     setFiles(selectedFiles);
     setStatus('idle');
   };
-  const handleConvert = () => {
+  const handleConvert = async () => {
     if (files.length === 0) return;
-    setStatus('processing');
-    setTimeout(() => {
+
+    try {
+      setStatus('processing');
+
+      const docxBlob = await convertPdfToDocx(files[0]);
+
+      // store temporarily (same pattern as Image → PDF)
+      (window as any).__DOCX_BLOB__ = docxBlob;
+
       setStatus('success');
-    }, 2000);
+    } catch (error) {
+      console.error(error);
+      alert("Conversion failed");
+      setStatus('idle');
+    }
   };
   const handleDownload = () => {
-    if (files.length === 0) return;
-    const docxBlob = generateDocxFile(files[0], options);
+    const docxBlob = (window as any).__DOCX_BLOB__;
+    if (!docxBlob || files.length === 0) return;
+
     const filename = `${getFilenameWithoutExtension(files[0].name)}.docx`;
     triggerDownload(docxBlob, filename);
   };
   const handleReset = () => {
     setFiles([]);
     setStatus('idle');
+    delete (window as any).__DOCX_BLOB__;
   };
   return <div className="max-w-4xl mx-auto">
       <div className="mb-8 text-center">
