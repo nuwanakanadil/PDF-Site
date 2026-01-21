@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Layout } from './components/Layout';
+
 import { HomePage } from './pages/HomePage';
 import { ImageToPdfPage } from './pages/ImageToPdfPage';
 import { MergePdfPage } from './pages/MergePdfPage';
@@ -8,19 +9,34 @@ import { PassportPhotoPage } from './pages/PassportPhotoPage';
 import { PdfToPptPage } from './pages/PdfToPptPage';
 import { PdfToDocPage } from './pages/PdfToDocPage';
 import { PdfEditorPage } from './pages/PdfEditorPage';
+import { ImageResizePage } from './pages/ImageResizePage';
+import { PdfPasswordPage } from './pages/PdfPasswordPage';
+import { ImageConvertPage } from './pages/ImageConvertPage';
+import { PdfPageManagerPage } from './pages/PdfPageManagerPage';
+
+
+
+// ✅ NEW PAGE
+import { ImageCompressPage } from './pages/ImageCompressPage';
+
+
 export function App() {
-  const [currentPath, setCurrentPath] = useState(window.location.hash.slice(1) || '/');
+
+  const [currentPath, setCurrentPath] =
+    useState(window.location.hash.slice(1) || '/');
+
   useEffect(() => {
     const handleHashChange = () => {
-      const path = window.location.hash.slice(1) || '/';
-      setCurrentPath(path);
+      setCurrentPath(window.location.hash.slice(1) || '/');
     };
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
+
   const navigate = (path: string) => {
     window.location.hash = path;
   };
+
   const renderPage = () => {
     switch (currentPath) {
       case '/':
@@ -31,6 +47,8 @@ export function App() {
         return <MergePdfPage />;
       case '/compress-pdf':
         return <CompressPdfPage />;
+      case '/compress-image':
+        return <ImageCompressPage />;
       case '/passport-photo':
         return <PassportPhotoPage />;
       case '/pdf-to-ppt':
@@ -39,11 +57,25 @@ export function App() {
         return <PdfToDocPage />;
       case '/pdf-editor':
         return <PdfEditorPage />;
+      case '/resize-image':
+  return <ImageResizePage />;
+
+case '/pdf-password':
+  return <PdfPasswordPage />;
+case '/convert-image':
+  return <ImageConvertPage />;
+
+case '/pdf-pages':
+  return <PdfPageManagerPage />;
+
       default:
         return <HomePage onNavigate={navigate} />;
     }
   };
-  return <Layout currentPath={currentPath} onNavigate={navigate}>
+
+  return (
+    <Layout currentPath={currentPath} onNavigate={navigate}>
       {renderPage()}
-    </Layout>;
+    </Layout>
+  );
 }
