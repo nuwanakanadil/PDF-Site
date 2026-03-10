@@ -51,7 +51,7 @@
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
-            <version>2.0.29</version>
+            <version>3.0.3</version>
         </dependency>
 
         <!-- Word document creation -->
@@ -73,7 +73,7 @@
   <dependency>
     <groupId>org.apache.pdfbox</groupId>
     <artifactId>pdfbox</artifactId>
-    <version>2.0.29</version>
+    <version>3.0.3</version>
   </dependency>
 
   <!-- Image IO WebP (optional but good) -->

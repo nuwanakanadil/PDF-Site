@@ -1,5 +1,7 @@
 package com.example.pdftools.service;
 
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.io.RandomAccessReadBuffer;
 import org.apache.pdfbox.pdmodel.*;
 // import org.apache.pdfbox.pdmodel.common.PDPage;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,8 @@ public class PdfPageManagerService {
             String pagesInput
     ) throws Exception {
 
-        PDDocument src = PDDocument.load(file.getInputStream());
+        RandomAccessReadBuffer buffer = new RandomAccessReadBuffer(file.getInputStream());
+        PDDocument src = Loader.loadPDF(buffer);
         PDDocument out = new PDDocument();
 
         Set<Integer> selected = parsePages(pagesInput, src.getNumberOfPages());

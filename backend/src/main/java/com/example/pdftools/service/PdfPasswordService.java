@@ -1,5 +1,7 @@
 package com.example.pdftools.service;
 
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.io.RandomAccessReadBuffer;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
 import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
@@ -24,8 +26,8 @@ public class PdfPasswordService {
             throw new RuntimeException("Password required");
         }
 
-        PDDocument document =
-            PDDocument.load(file.getInputStream());
+        RandomAccessReadBuffer buffer = new RandomAccessReadBuffer(file.getInputStream());
+        PDDocument document = Loader.loadPDF(buffer);
 
         AccessPermission permissions =
             new AccessPermission();
@@ -62,8 +64,9 @@ public class PdfPasswordService {
 
     // Try opening WITHOUT password
     try {
-        document = PDDocument.load(
-            file.getInputStream(),
+        RandomAccessReadBuffer buffer = new RandomAccessReadBuffer(file.getInputStream());
+        document = Loader.loadPDF(
+            buffer,
             (String) null
         );
 
@@ -82,8 +85,9 @@ public class PdfPasswordService {
         }
 
         // Try with password
-        document = PDDocument.load(
-            file.getInputStream(),
+        RandomAccessReadBuffer buffer = new RandomAccessReadBuffer(file.getInputStream());
+        document = Loader.loadPDF(
+            buffer,
             password
         );
 

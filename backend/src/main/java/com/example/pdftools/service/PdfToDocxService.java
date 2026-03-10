@@ -1,5 +1,7 @@
 package com.example.pdftools.service;
 
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.io.RandomAccessReadBuffer;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.poi.xwpf.usermodel.*;
@@ -15,7 +17,8 @@ public class PdfToDocxService {
 
     public byte[] convert(MultipartFile pdfFile) throws IOException {
 
-        PDDocument pdfDocument = PDDocument.load(pdfFile.getInputStream());
+        RandomAccessReadBuffer buffer = new RandomAccessReadBuffer(pdfFile.getInputStream());
+        PDDocument pdfDocument = Loader.loadPDF(buffer);
 
         PDFTextStripper stripper = new PDFTextStripper();
         stripper.setSortByPosition(true);

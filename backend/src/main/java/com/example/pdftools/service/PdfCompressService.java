@@ -1,5 +1,7 @@
 package com.example.pdftools.service;
 
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.io.RandomAccessReadBuffer;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
@@ -16,7 +18,8 @@ public class PdfCompressService {
 
     public byte[] compress(MultipartFile file, String level) throws IOException {
 
-        PDDocument document = PDDocument.load(file.getInputStream());
+        RandomAccessReadBuffer buffer = new RandomAccessReadBuffer(file.getInputStream());
+        PDDocument document = Loader.loadPDF(buffer);
 
         float scale;
         if ("low".equals(level)) scale = 0.9f;
