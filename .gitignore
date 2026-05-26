@@ -7,6 +7,8 @@ target/
 
 # Logs
 *.log
+
+# Local run config
 .run/
 
 # Python
@@ -15,6 +17,7 @@ venv/
 env/
 ENV/
 __pycache__/
+**/__pycache__/
 *.py[cod]
 *.pyd
 .python-version
