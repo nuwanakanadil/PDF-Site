@@ -1,5 +1,7 @@
 package com.example.pdftools.service;
 
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.io.RandomAccessReadBuffer;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
@@ -16,12 +18,16 @@ public class PdfCompressService {
 
     public byte[] compress(MultipartFile file, String level) throws IOException {
 
-        PDDocument document = PDDocument.load(file.getInputStream());
+        RandomAccessReadBuffer buffer = new RandomAccessReadBuffer(file.getInputStream());
+        PDDocument document = Loader.loadPDF(buffer);
 
         float scale;
-        if ("low".equals(level)) scale = 0.9f;
-        else if ("high".equals(level)) scale = 0.4f;
-        else scale = 0.7f; // medium
+        if ("low".equals(level))
+            scale = 0.9f;
+        else if ("high".equals(level))
+            scale = 0.4f;
+        else
+            scale = 0.7f; // medium
 
         for (PDPage page : document.getPages()) {
             var resources = page.getResources();
@@ -31,28 +37,24 @@ public class PdfCompressService {
 
                     BufferedImage buffered = image.getImage();
 
-                    int newW = Math.max(1, (int)(buffered.getWidth() * scale));
-                    int newH = Math.max(1, (int)(buffered.getHeight() * scale));
+                    int newW = Math.max(1, (int) (buffered.getWidth() * scale));
+                    int newH = Math.max(1, (int) (buffered.getHeight() * scale));
 
                     BufferedImage resized = new BufferedImage(
-                        newW,
-                        newH,
-                        BufferedImage.TYPE_INT_RGB
-                    );
+                            newW,
+                            newH,
+                            BufferedImage.TYPE_INT_RGB);
 
                     resized.getGraphics().drawImage(
-                        buffered, 0, 0, newW, newH, null
-                    );
+                            buffered, 0, 0, newW, newH, null);
 
                     ByteArrayOutputStream imgOut = new ByteArrayOutputStream();
                     ImageIO.write(resized, "jpg", imgOut);
 
-                    PDImageXObject compressed =
-                        PDImageXObject.createFromByteArray(
+                    PDImageXObject compressed = PDImageXObject.createFromByteArray(
                             document,
                             imgOut.toByteArray(),
-                            null
-                        );
+                            null);
 
                     resources.put(name, compressed);
                 }
