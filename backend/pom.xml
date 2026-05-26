@@ -60,22 +60,6 @@
             <artifactId>poi-ooxml</artifactId>
             <version>5.4.1</version>
         </dependency>
-
-
-
-  <!-- Spring Web -->
-  <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-web</artifactId>
-  </dependency>
-
-  <!-- PDFBox -->
-  <dependency>
-    <groupId>org.apache.pdfbox</groupId>
-    <artifactId>pdfbox</artifactId>
-    <version>3.0.3</version>
-  </dependency>
-
   <!-- Image IO WebP (optional but good) -->
   <dependency>
     <groupId>com.twelvemonkeys.imageio</groupId>

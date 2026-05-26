@@ -16,8 +16,7 @@ public class PdfPageManagerService {
     public byte[] process(
             MultipartFile file,
             String mode,
-            String pagesInput
-    ) throws Exception {
+            String pagesInput) throws Exception {
 
         RandomAccessReadBuffer buffer = new RandomAccessReadBuffer(file.getInputStream());
         PDDocument src = Loader.loadPDF(buffer);
@@ -28,7 +27,7 @@ public class PdfPageManagerService {
         for (int i = 0; i < src.getNumberOfPages(); i++) {
             boolean keep = selected.contains(i + 1);
             if ((mode.equals("keep") && keep) ||
-                (mode.equals("remove") && !keep)) {
+                    (mode.equals("remove") && !keep)) {
 
                 out.addPage(src.getPage(i));
             }

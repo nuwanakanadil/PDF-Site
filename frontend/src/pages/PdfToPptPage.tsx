@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { FileUpload } from '../components/FileUpload';
 import { Button } from '../components/Button';
 import { Presentation, Download, RefreshCw, CheckCircle, FileText } from 'lucide-react';
-import { generatePptxFile, triggerDownload, getFilenameWithoutExtension } from '../utils/downloadHelpers';
+import { triggerDownload, getFilenameWithoutExtension } from '../utils/downloadHelpers';
+import { convertPdfToPptx } from '../services/pdfToPptApi';
 export function PdfToPptPage() {
   const [files, setFiles] = useState<File[]>([]);
   const [status, setStatus] = useState<'idle' | 'processing' | 'success'>('idle');
@@ -15,22 +16,31 @@ export function PdfToPptPage() {
     setFiles(selectedFiles);
     setStatus('idle');
   };
-  const handleConvert = () => {
+  const handleConvert = async () => {
     if (files.length === 0) return;
-    setStatus('processing');
-    setTimeout(() => {
+
+    try {
+      setStatus('processing');
+      const pptxBlob = await convertPdfToPptx(files[0], options);
+      (window as any).__PPTX_BLOB__ = pptxBlob;
       setStatus('success');
-    }, 2000);
+    } catch (error) {
+      console.error(error);
+      alert(error instanceof Error ? error.message : 'Conversion failed');
+      setStatus('idle');
+    }
   };
   const handleDownload = () => {
-    if (files.length === 0) return;
-    const pptxBlob = generatePptxFile(files[0], options);
+    const pptxBlob = (window as any).__PPTX_BLOB__;
+    if (!pptxBlob || files.length === 0) return;
+
     const filename = `${getFilenameWithoutExtension(files[0].name)}.pptx`;
-    triggerDownload(pptxBlob, filename);
+    triggerDownload(pptxBlob as Blob, filename);
   };
   const handleReset = () => {
     setFiles([]);
     setStatus('idle');
+    delete (window as any).__PPTX_BLOB__;
   };
   return <div className="max-w-4xl mx-auto">
       <div className="mb-8 text-center">

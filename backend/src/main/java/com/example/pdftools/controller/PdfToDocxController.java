@@ -5,6 +5,8 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.charset.StandardCharsets;
+
 @RestController
 @RequestMapping("/api")
 public class PdfToDocxController {
@@ -22,19 +24,24 @@ public class PdfToDocxController {
     public ResponseEntity<byte[]> convertPdfToDocx(
             @RequestParam("file") MultipartFile file
     ) throws Exception {
+        try {
+            byte[] docxBytes = service.convert(file);
 
-        byte[] docxBytes = service.convert(file);
-
-        return ResponseEntity.ok()
-                .header(
-                    HttpHeaders.CONTENT_DISPOSITION,
-                    "attachment; filename=result.docx"
-                )
-                .contentType(
-                    MediaType.parseMediaType(
-                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            return ResponseEntity.ok()
+                    .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=result.docx"
                     )
-                )
-                .body(docxBytes);
+                    .contentType(
+                        MediaType.parseMediaType(
+                            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        )
+                    )
+                    .body(docxBytes);
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body(ex.getMessage().getBytes(StandardCharsets.UTF_8));
+        }
     }
 }

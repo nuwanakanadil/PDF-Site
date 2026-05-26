@@ -6,3 +6,9 @@ spring:
     multipart:
       max-file-size: 30MB
       max-request-size: 30MB
+
+paddleocr:
+  enabled: true
+  base-url: http://localhost:8001
+  pdf-endpoint: /ocr/pdf
+  min-direct-text-chars: 40

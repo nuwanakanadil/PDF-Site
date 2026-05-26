@@ -8,7 +8,8 @@ export async function convertPdfToDocx(file: File): Promise<Blob> {
   });
 
   if (!response.ok) {
-    throw new Error("PDF to DOCX conversion failed");
+    const errorText = await response.text();
+    throw new Error(errorText || "PDF to DOCX conversion failed");
   }
 
   return await response.blob();
